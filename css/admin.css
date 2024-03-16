@@ -1,0 +1,279 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
+
+:root {
+    --header-height: 3rem;
+    --nav-width: 68px;
+    --color-one: #6474E5; /*sidebar*/
+    --color-two: #9AA4EC; /*sidebar btn*/
+    --color-three: #F8C8C6; /*light pink*/
+    --color-four: #F4A4A4;  /*dark pink*/
+    --color-five: #4EA1D3; /*btn blue*/
+    --white-color: #FFFFFF;
+    --body-font: 'Nunito', sans-serif;
+    --normal-font-size: 1rem;
+    --z-fixed: 100;
+}
+
+*,
+::before,
+::after {
+    box-sizing: border-box;
+}
+
+body {
+    position: relative;
+    margin: var(--header-height) 0 0 0;
+    padding: 0 1rem;
+    font-family: var(--body-font);
+    font-size: var(--normal-font-size);
+    transition: .5s;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+.breadcrumb-item::after {
+    content: " > " !important;
+}
+
+.breadcrumb li:last-child:after, .breadcrumb-item::before {
+    content: "" !important;
+}
+
+/*********************************************** Sidebar start **********************************************/
+.header {
+    width: 100%;
+    height: var(--header-height);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    background-color: var(--color-one);
+    z-index: var(--z-fixed);
+    transition: .5s;
+}
+
+.header_toggle {
+    color: var(--white-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.profile-icon {
+    width: 25px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    border-radius: 30%;
+    overflow: hidden;
+    align-items: center;
+}
+
+.profile-icon img {
+    width: 40px;
+}
+
+.l-navbar {
+    position: fixed;
+    top: 0;
+    left: -30%;
+    width: var(--nav-width);
+    height: 100vh;
+    background-color: var(--color-one);
+    padding: .5rem 1rem 0 0;
+    transition: .5s;
+    z-index: var(--z-fixed);
+    box-shadow: 4px 4px 4px rgb(0 0 0 / 25%);
+}
+
+.nav {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.nav_logo,
+.nav_link,
+.logout,
+.nav_dropdown {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    align-items: center;
+    column-gap: 1rem;
+    padding: .5rem 0 .5rem 1.5rem;
+}
+
+.nav_logo {
+    margin-bottom: 2rem;
+    cursor: auto;
+}
+
+.nav_logo-icon {
+    background: url("http://localhost/ureco/asset/favicon-32x32.png");
+    height: 1.5rem;
+    width: 1.5rem;
+    display: block;
+    background-size: contain;
+}
+
+.nav_logo-name {
+    color: var(--white-color);
+    font-weight: 700
+}
+
+.nav_link, 
+.logout,
+.nav_dropdown {
+    position: relative;
+    color: var(--color-three);
+    margin-bottom: 1.5rem;
+    transition: .3s;
+}
+
+.logout {
+    margin-bottom: 0.5rem;
+
+}
+
+.nav_link:hover,
+.logout:hover,
+.nav_dropdown:hover {
+    color: var(--white-color);
+    cursor: pointer;
+}
+
+.nav_icon {
+    font-size: 1.25rem;
+}
+
+.dropdown-container {
+  display: none;
+}
+
+.dd-bg{
+    background-color: var(--color-two);
+}
+
+.show {
+    left: 0;
+}
+
+.body-pd {
+    padding-left: calc(var(--nav-width) + 1rem);
+}
+
+.active {
+    color: var(--white-color);
+}
+
+.active::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 2px;
+    height: 32px;
+    background-color: var(--white-color);
+}
+
+@media screen and (min-width: 768px) {
+    body {
+        margin: calc(var(--header-height) + 1rem) 0 0 0;
+        padding-left: calc(var(--nav-width) + 2rem);
+    }
+
+    .header {
+        height: calc(var(--header-height) + 1rem);
+        padding: 0 2rem 0 calc(var(--nav-width) + 2rem);
+    }
+
+    .header_img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .header_img img {
+        width: 45px;
+    }
+
+    .l-navbar {
+        left: 0;
+        padding: 1rem 1rem 0 0;
+    }
+
+    .show {
+        width: calc(var(--nav-width) + 156px);
+    }
+
+    .body-pd {
+        padding-left: calc(var(--nav-width) + 188px);
+    }
+}
+
+/*********************************************** Sidebar end **********************************************/
+
+
+/*********************************************** Profile start **********************************************/
+
+#content, #content input{
+    color: var(--color-one);
+}
+
+#content button, #add-btn{
+    background-color: var(--color-five);
+    color: var(--white-color);
+}
+
+.profile-photo {
+    width: 10rem;
+    height: 10rem;
+    display: flex;
+    justify-content: center;
+    border-radius: 50%;
+    overflow: hidden;
+    align-items: center;
+}
+
+.bg-color{
+    background-color: var(--color-three);
+}
+
+.hidden{
+    display: none; 
+}
+
+#file-input {
+    display: none; 
+}
+
+.photo-input{
+    text-align: center
+}
+
+/*********************************************** Profile end **********************************************/
+
+/*********************************************** Search bar start **********************************************/
+
+@media screen and (max-width: 768px) {
+    .input-group>.form-control, .input-group>.form-select{
+        width: 50% !important;
+    }
+
+}
+
+/*********************************************** Search bar end **********************************************/
+
+/*********************************************** form start **********************************************/
+
+#submit-btn, #reset-btn{
+    background-color: var(--color-five);
+    color: var(--white-color) !important;
+}
+
+
+/*********************************************** form end **********************************************/

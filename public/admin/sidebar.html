@@ -1,0 +1,64 @@
+
+    <header class="header" id="header">
+        <div class="header_toggle"> <i class="fa fa-bars" aria-hidden="true" id="header-toggle"></i> </div>
+        <a href="logout.php" class="logout" onclick="return confirm('Are you sure you want to logout?');"> 
+            <i class="nav_icon fa fa-sign-out-alt" aria-hidden="true"></i> 
+            <span class="nav_name">Logout</span> 
+        </a>
+    </header>
+    <div class="l-navbar" id="nav-bar">
+        <nav class="nav">
+            <div> 
+            	<a class="nav_logo"> 
+            		<i class="nav_logo-icon" aria-hidden="true"></i> 
+            		<span class="nav_logo-name">UReCo</span> 
+            	</a>
+              <div class="nav_list"> 
+              	<a href="index.php" class="nav_link" id="nav_home"> 
+              		<i class="nav_icon fa fa-home" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Home"></i> 
+              		<span class="nav_name">Home</span> 
+              	</a> 
+                <div class="nav_dropdown" id="nav_user"> 
+                    <i class="nav_icon fas fa-user-edit" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="User"></i> 
+                    <span class="nav_name">User <i class="fa fa-caret-down"></i></span>
+                </div>
+                <div class="dropdown-container dd-bg rounded">
+                    <a href="userMaintList.php" class="nav_link" id="nav_user_maint"> 
+                        <i class="fas fa-user-cog" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Maintenance Team"></i>
+                        <span class="nav_name">Maintenance Team</span> 
+                    </a> 
+                    <a href="userStaffList.php" class="nav_link" id="nav_user_staff">
+                        <i class="fas fa-user-tie" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Staff"></i>
+                        <span class="nav_name">Staff</span> 
+                    </a> 
+                    <a href="userStudentSearch.php" class="nav_link" id="nav_user_stud"> 
+                        <i class="  fas fa-user-graduate" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Student"></i>
+                        <span class="nav_name">Student</span> 
+                    </a> 
+                </div>                
+              	<a href="facilityList.php" class="nav_link" id="nav_facility"> 
+              		<i class="nav_icon fa fa-building" aria-hidden="true" data-toggle="tooltip" data-placement="right" title="Facility"></i> 
+              		<span class="nav_name">Facility</span> 
+              	</a> 
+              </div>
+            </div> 
+        </nav>
+    </div>
+    <script>
+    var dropdown = document.getElementsByClassName("nav_dropdown");
+    var i;
+
+    for (i = 0; i < dropdown.length; i++) {
+      dropdown[i].addEventListener("click", function() {
+          var dropdownContent = this.nextElementSibling;
+          if (dropdownContent.style.display === "block") {
+            dropdownContent.style.display = "none";
+          } else {
+            dropdownContent.style.display = "block";
+          }
+      });
+    }
+    </script>    
+    <!--Container Main start-->
+    <div class="pb-5"></div>
+    

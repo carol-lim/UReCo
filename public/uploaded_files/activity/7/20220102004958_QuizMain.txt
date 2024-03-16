@@ -1,0 +1,207 @@
+import javax.swing.*;
+import java.awt.event.*;
+import java.awt.*;
+import java.sql.*;
+import java.util.*;
+
+public class QuizMain extends JFrame implements ActionListener
+{
+	private String question[];
+	//private char ans[]={'T','F','F','T','T','F','F','T','T','T'}; //this answer put in database.
+	private char choice[];
+	private JPanel panelNorth,panelCenter,panelSouth,panelEast, bPanel , lPanel, panelNorth2,panelCenter2,panelSouth2,panelEast2;
+	private JLabel messageLabel;
+	private JLabel questionLabel[];
+	private JRadioButton trueRadio[],falseRadio[];
+	private ButtonGroup radioButtonGroup[];
+	private JButton calcMarks,closeButton;
+	private int i;
+	private int total;
+	private int test=1;
+	private int output=0;
+	
+	//login
+	private JLabel loginLabel;
+	private JButton login;
+	private JTextField name;
+	
+	public static Connection conn;
+	public static Statement stmt;
+	
+	public QuizMain()
+	{
+		question=new String[10];
+		choice=new char[10];
+		questionLabel=new JLabel[10];
+		trueRadio=new JRadioButton[10];
+		falseRadio=new JRadioButton[10];
+		buildPanelLogin();
+	}
+	
+	public void buildPanelLogin()
+	{
+		JFrame frame = new JFrame("Login for OOP Quiz");
+		loginLabel = new JLabel ("Name :");
+		name = new JTextField(20);
+		login = new JButton("Start Quiz");
+		login.addActionListener(this);
+	
+		frame.setLayout(new FlowLayout());
+		frame.add(loginLabel);
+		frame.add(name);
+		frame.add(login);
+		frame.setSize(300,200);		
+		frame.setVisible(true);		
+	}
+	
+	public void buildPanel()
+	{
+		JFrame frame = new JFrame("Quiz Questions");
+		frame.setSize(1300,600);
+		
+		Questions ques= new Questions();
+		messageLabel=new JLabel("Answer all the question : ");
+		panelNorth2=new JPanel();
+		panelNorth2.add(messageLabel);
+		for(int i=0;i<question.length;i++)
+		{
+			trueRadio[i]=new JRadioButton("True");
+			falseRadio[i]=new JRadioButton("False");
+		}
+		panelCenter2=new JPanel();
+		panelEast2=new JPanel();
+		panelCenter2.setLayout(new GridLayout(10,2));
+		panelEast2.setLayout(new GridLayout(10,2));
+        panelCenter2.setPreferredSize(new Dimension(1000, 600));
+		panelCenter2.setMaximumSize(new Dimension(1000, 600));
+		panelEast2.setPreferredSize(new Dimension(300, 600));
+		panelEast2.setMaximumSize(new Dimension(300, 600));
+		
+		String q;
+		for(int i=0;i<question.length;i++)
+		{
+			q = ques.displayQuestions(i);
+			questionLabel[i]=new JLabel(q);
+			panelCenter2.add(questionLabel[i]); 
+			panelEast2.add(trueRadio[i]);
+			panelEast2.add(falseRadio[i]);
+		}
+		
+		calcMarks=new JButton("Total Marks");
+		calcMarks.addActionListener(this);
+		closeButton=new JButton("Close");
+		closeButton.addActionListener(this);
+		panelSouth2=new JPanel();
+		panelSouth2.add(calcMarks);
+		panelSouth2.add(closeButton);
+		frame.add(panelNorth2,BorderLayout.NORTH);
+		frame.add(panelCenter2,BorderLayout.CENTER);
+		frame.add(panelEast2,BorderLayout.EAST);
+		frame.add(panelSouth2,BorderLayout.SOUTH);
+		radioButtonGroup=new ButtonGroup[10];
+		
+		for(int i=0;i<question.length;i++)
+		{
+			radioButtonGroup[i]=new ButtonGroup();
+			radioButtonGroup[i].add(trueRadio[i]);
+			radioButtonGroup[i].add(falseRadio[i]);
+		}
+		
+		frame.setVisible(true);
+	}
+
+	public void actionPerformed(ActionEvent e)
+	{		
+		//login
+		if(e.getActionCommand().equals("Start Quiz"))
+		{	
+			if(name.getText().equals(""))
+			{
+				JOptionPane.showMessageDialog(null, "Please enter your name.");
+			}
+			else
+			{
+				buildPanel();
+			}
+		}
+		
+		StudentAnswer studans = new StudentAnswer();
+		CheckAnswers checkans = new CheckAnswers();
+		char[] sa;
+		sa = new char[10];
+		if(e.getActionCommand().equals("Total Marks"))
+		{
+			test=1;
+			output=0;
+			for(int i=0;i<question.length;i++)
+			{
+				if(trueRadio[i].isSelected())
+				{
+					studans.setAnswer('T');
+					//choice[i]='T';
+					output++;
+				}
+						
+				else if(falseRadio[i].isSelected())
+				{
+					studans.setAnswer('F');
+					//choice[i]='F';
+					output++;
+				}
+			}
+								
+			if(output<10)
+			{
+				JOptionPane.showMessageDialog(null,"Please answer all the questions");
+				test=0;
+			}
+							
+							
+			if(test!=0)
+			{	
+				sa = studans.getAnswer();
+				total = checkans.checkAns(sa);
+				if(total ==0)
+					JOptionPane.showMessageDialog(null,"0/10"+"\nThe question you answered wrongly : "+checkans.wrong);
+			
+				else if (total==10)
+					JOptionPane.showMessageDialog(null, total + "/10"+"\nCongratulation !! All answers are correct");
+				
+				else 
+					JOptionPane.showMessageDialog(null, total + "/10"+"\nThe question you answered wrongly : "+checkans.wrong);
+				
+			}
+			String sqlStatement="INSERT INTO users (Name, Marks) VALUES ('"+name+"','"+total+"')";
+			try {
+				int rows = stmt.executeUpdate(sqlStatement);
+			} catch (SQLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		
+		else if (e.getActionCommand().equals("Close"))
+		{
+			System.exit(0);
+		}
+	
+	}
+	public static void main(String args[])
+	{
+		DatabaseConnection db=new DatabaseConnection();
+		
+		try(Connection conn = db.getConnection())
+		{
+			if(conn!=null)
+			{
+				System.out.println("Database successfully connected !!");
+				QuizMain rb=new QuizMain();
+
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+}
